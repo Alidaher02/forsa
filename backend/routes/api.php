@@ -1,8 +1,18 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\SessionsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
+Route::post('/register', [RegisterController::class, 'store']);
+Route::post('/login', [SessionsController::class, 'store']);
+
+
+Route::middleware('auth:sanctum')->group(function () {    
+    Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+    }); 
+
+    Route::delete('/logout', [SessionsController::class, 'destroy']);
+});
