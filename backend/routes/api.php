@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SessionsController;
+use App\Http\Controllers\Resume\ResumeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,4 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
     }); 
 
     Route::delete('/logout', [SessionsController::class, 'destroy']);
+
+    Route::post('/resumes/store', [ResumeController::class, 'store']);
+    Route::delete('/resumes/destroy', [ResumeController::class, 'destroy']);
 });
