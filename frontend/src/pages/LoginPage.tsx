@@ -1,3 +1,4 @@
+
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,7 +10,6 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,73 +46,141 @@ export default function LoginPage() {
     }
   }
 
-  return (
-    <main className="login-page">
-      <section className="login-intro" aria-label="Project Manager">
-        <Link className="login-brand" to="/login">
-          <span className="login-brand-mark" aria-hidden="true">
-            PM
-          </span>
-          <span>Project Manager</span>
-        </Link>
+  const inputClass =
+    "h-14 w-full border border-[#d9d9d9] bg-white px-4 text-sm text-black placeholder:text-[#999] outline-none transition-colors focus:border-[#ed1c24]";
 
-        <div className="login-intro-copy">
-          <p className="login-eyebrow">One workspace. Clear progress.</p>
-          <h1>Keep every project moving forward.</h1>
-          <p>
-            Plan the work, see what matters, and keep your team aligned from the
-            first brief to the final handoff.
+  return (
+    <main className="min-h-screen bg-white font-sans text-black">
+      {/* Date bar */}
+      <div className="border-b border-[#e8e8e8] py-3 text-center text-[10px] tracking-wide text-[#777]">
+        {new Date().toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </div>
+
+      {/* Header */}
+      <header className="border-b border-[#e8e8e8]">
+        <div className="relative mx-auto flex h-20 max-w-7xl items-center justify-center px-5">
+          <Link
+            to="/"
+            className="text-[42px] font-black leading-none tracking-[-3px] text-[#ed1c24]"
+          >
+            forsa
+          </Link>
+
+          <Link
+            to="/register"
+            className="absolute right-5 text-[11px] font-bold uppercase tracking-[1px] hover:text-[#ed1c24] sm:right-8"
+          >
+            Create Account
+          </Link>
+        </div>
+      </header>
+
+      {/* Navigation */}
+      <nav className="border-b border-[#e8e8e8]">
+        <div className="mx-auto flex min-h-11 max-w-7xl items-center justify-center gap-5 overflow-x-auto px-4 text-[11px] font-semibold sm:gap-8">
+          <Link to="/" className="hover:text-[#ed1c24]">
+            Home
+          </Link>
+
+          <Link to="/jobs" className="hover:text-[#ed1c24]">
+            Find Jobs
+          </Link>
+
+          <Link to="/companies" className="hover:text-[#ed1c24]">
+            Companies
+          </Link>
+
+          <Link to="/login" className="hover:text-[#ed1c24]">
+            Sign In
+          </Link>
+
+          <span className="bg-[#ed1c24] px-4 py-2 text-[10px] font-bold uppercase tracking-wide text-white">
+            Careers
+          </span>
+        </div>
+      </nav>
+
+      {/* Login content */}
+      <section className="mx-auto w-full max-w-[580px] px-5 pb-20 pt-16 sm:pt-20">
+        {/* Heading */}
+        <div className="mb-10 text-center">
+          <p className="mb-4 text-[11px] font-bold uppercase tracking-[2px] text-[#ed1c24]">
+            FORSA CAREERS
+          </p>
+
+          <h1 className="text-[42px] font-extrabold leading-tight tracking-[-1.5px] text-black sm:text-[52px]">
+            Welcome back
+          </h1>
+
+          <p className="mx-auto mt-4 max-w-[420px] text-[14px] leading-7 text-[#888]">
+            Sign in to manage your applications, discover opportunities,
+            and continue your journey.
           </p>
         </div>
 
-        <div className="login-plan" aria-hidden="true">
-          <div className="login-plan-header">
-            <span>Today&apos;s plan</span>
-            <span>3 active</span>
-          </div>
-          <div className="login-plan-row">
-            <span className="login-plan-dot dot-blue" />
-            <span>Product launch</span>
-            <i className="login-plan-track track-blue" />
-          </div>
-          <div className="login-plan-row">
-            <span className="login-plan-dot dot-mint" />
-            <span>Research review</span>
-            <i className="login-plan-track track-mint" />
-          </div>
-          <div className="login-plan-row">
-            <span className="login-plan-dot dot-gold" />
-            <span>Client handoff</span>
-            <i className="login-plan-track track-gold" />
-          </div>
-        </div>
-      </section>
+        {/* Login form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email */}
+          <div>
+            <label
+              htmlFor="email"
+              className="mb-2 block text-[12px] font-bold uppercase tracking-[0.5px]"
+            >
+              Email address
+            </label>
 
-      <section className="login-panel">
-        <div className="login-card">
-          <div className="login-heading">
-            <p className="login-eyebrow">Welcome back</p>
-            <h2>Sign in to your workspace</h2>
-            <p>Use your work email to continue.</p>
-          </div>
-
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="login-field">
-              <label htmlFor="email">Email address</label>
+            <div className="relative">
+              <svg
+                className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#aaa]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <rect x="3" y="5" width="18" height="14" rx="1" />
+                <path d="m3 7 9 7 9-7" />
+              </svg>
 
               <input
                 id="email"
                 type="email"
                 autoComplete="email"
-                placeholder="you@company.com"
+                placeholder="Enter your email address"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
+                className={`${inputClass} pl-12`}
               />
             </div>
+          </div>
 
-            <div className="login-field">
-              <label htmlFor="password">Password</label>
+          {/* Password */}
+          <div>
+            <label
+              htmlFor="password"
+              className="mb-2 block text-[12px] font-bold uppercase tracking-[0.5px]"
+            >
+              Password
+            </label>
+
+            <div className="relative">
+              <svg
+                className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#aaa]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <rect x="5" y="10" width="14" height="11" rx="1" />
+                <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+              </svg>
 
               <input
                 id="password"
@@ -122,25 +190,53 @@ export default function LoginPage() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
+                className={`${inputClass} pl-12`}
               />
             </div>
+          </div>
 
-            {error && (
-              <p className="login-error" role="alert">
-                {error}
-              </p>
-            )}
-
-            <button className="login-submit" type="submit" disabled={isLoading}>
-              {isLoading ? "Signing in…" : "Sign in"}
-            </button>
-
-            <p className="login-alternate">
-              Need an account? <Link to="/register">Create one</Link>
+          {/* Error */}
+          {error && (
+            <p
+              role="alert"
+              className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            >
+              {error}
             </p>
-          </form>
-        </div>
+          )}
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="flex h-14 w-full items-center justify-center gap-3 bg-[#ed1c24] text-[12px] font-bold uppercase tracking-[1px] text-white transition-colors hover:bg-[#d71920] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isLoading ? (
+              "Signing in..."
+            ) : (
+              <>
+                Sign In
+                <span className="text-lg font-normal">→</span>
+              </>
+            )}
+          </button>
+
+          <p className="text-center text-[13px] text-[#888]">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="font-semibold text-black hover:text-[#ed1c24]"
+            >
+              Create account
+            </Link>
+          </p>
+        </form>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-[#e8e8e8] py-6 text-center text-[11px] text-[#999]">
+        © {new Date().getFullYear()} Forsa. All rights reserved.
+      </footer>
     </main>
   );
 }
