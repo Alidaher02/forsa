@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Resume::class);
     }
+
+    public function candidateProfile(): HasOne
+    {
+       return $this->hasOne(CandidateProfile::class);
+    }
 }

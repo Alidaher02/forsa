@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Resume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreResumeRequest;
+use App\Services\ResumeTextExtractor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class ResumeController extends Controller
 {
-    public function store(StoreResumeRequest $request)
+    public function store(StoreResumeRequest $request, ResumeTextExtractor $extractor)
     {
         $user = $request->user();
 
@@ -41,7 +42,19 @@ class ResumeController extends Controller
                 'file_size' => $file->getSize(),
                 'status' => 'pending',
             ]);
+
+            $text = $extractor->extract($file);
+
+            $resume->update([
+                'parsed_text' => $text,
+                'status' => 'completed',
+            ]);
+
+
         } catch (\Throwable $e) {
+            if (isset($resume)) {
+                $resume->delete();
+            }
             Storage::disk($disk)->delete($path);
 
             throw $e;
@@ -49,7 +62,8 @@ class ResumeController extends Controller
 
         return response()->json([
             'message' => 'Your CV has been uploaded.',
-            'resume' => $resume,
+            'resume_id' => $resume->id,
+            'status' => $resume->status
         ], 201);
     }
 
